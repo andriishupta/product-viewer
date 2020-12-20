@@ -1,5 +1,38 @@
 # ProductViewer
 
+## How to start
+
+### App
+- add `data.json` to the root of the folder
+- `npm install`
+- `npm start`
+- `npm start:api`
+
+### Tests
+- `npm run test`
+- `npm run e2e`
+- `npm run test:api`
+
+## To improve
+- use Search Service: Elastic search
+- for promotion use some 3rd party service
+- add relational database(with sharding)
+- use Cloudfront and it's caching
+- create Docker Config to have all up and running easy(FE/BE/DB)
+- set up Serveless/Terraform to have our apps in cloud(ex. AWS EC2)
+- personal: use Nest.js(default project had express and it was quicker), cause it has:
+  - Built-in Dependency Injection
+  - Microservices out of the box
+  - Redis/others support in a better way(for my experience)
+
+
+
+
+
+
+
+# Nrwl Nx Stuff
+
 This project was generated using [Nx](https://nx.dev).
 
 <p align="center"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png" width="450"></p>
