@@ -81,6 +81,11 @@ const Products = () => {
       .then(setVendors); // emit loading and show spinner
   }, []);
 
+  const handleVendorChange = (event) => {
+    setProducts([]); // to show loader
+    setActiveVendor(event.target.value as string);
+  }
+
   return (
     <React.Fragment>
       <div className={ classes.pageContent }>
@@ -93,14 +98,14 @@ const Products = () => {
               <Grid item>
                 <TextField id='search' label='Search' />
               </Grid>
-              { vendors.length && <Grid item>
+              { !!vendors.length && <Grid item>
                 <InputLabel id='vendors-select-label'>Vendors</InputLabel>
                 <Select
                   style={ { width: '200px' } }
                   labelId='vendors-select-label'
                   id='vendors-select'
                   value={ activeVendor }
-                  onChange={ (event) => setActiveVendor(event.target.value as string) }
+                  onChange={ handleVendorChange }
                 >
                   <MenuItem value={''}>All</MenuItem>
                   { vendors.map(vendor => <MenuItem value={ vendor }>{ vendor }</MenuItem>) }
