@@ -111,7 +111,7 @@ const Products = () => {
                     <LazyLoad height={300} offset={100}>
                       <CardMedia
                         className={ classes.productMedia }
-                        image={ product.media[1].url }
+                        image={ product.media && product.media[1] && product.media[1].url }
                         title={ product.name }
                       />
                     </LazyLoad>
