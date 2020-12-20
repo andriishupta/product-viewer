@@ -17,6 +17,7 @@ Describe how I have implemented, folder structure, etc.
 - `npm run test:api`
 
 ## To improve
+- split products components: header actions / list
 - api validation
 - api security
 - i18n

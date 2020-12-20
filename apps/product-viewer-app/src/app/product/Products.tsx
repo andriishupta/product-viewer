@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import LazyLoad from 'react-lazyload';
 import clsx from 'clsx';
@@ -23,13 +23,14 @@ import {
 } from '@material-ui/core';
 
 import { Product, Promotion } from '@product-viewer/api-interfaces';
+import { useDebounce } from '../hooks';
 
 const useStyles = makeStyles((theme) => ({
   pageContent: {
     backgroundColor: theme.palette.background.paper,
     padding: theme.spacing(8, 0, 6)
   },
-  pageButtons: {
+  pageActions: {
     marginTop: theme.spacing(4)
   },
   productGrid: {
@@ -60,13 +61,26 @@ const Products = () => {
   const [promo, setPromo] = useState<Promotion>();
   const [vendors, setVendors] = useState<string[]>([]);
   const [activeVendor, setActiveVendor] = useState<string>('');
+  const [search, setSearch] = useState<string>('');
+  const [loading, setLoading] = useState<boolean>(false);
+  const debouncedSearchTerm = useDebounce(search, 500);
+
 
   useEffect(() => {
-    const vendor = activeVendor ? `?vendor=${activeVendor}` : '';
-    fetch('/api/products' + vendor)
+    // todo someday: simplify with some QueryParams lib
+    const vendorQ = activeVendor ? `?vendor=${ activeVendor }` : '';
+    const searchQ = search ? `${ vendorQ ? '&' : '?' }search=${ search }` : '';
+
+    setProducts([]);
+    setLoading(true);
+
+    fetch('/api/products' + vendorQ + searchQ)
       .then((r) => r.json())
-      .then((data) => setTimeout(() => setProducts(data), 1000)); // emit loading and show spinner
-  }, [activeVendor]);
+      .then((data) => setTimeout(() => {
+        setProducts(data);
+        setLoading(false);
+      }, 1000)); // emit loading and show spinner
+  }, [activeVendor, debouncedSearchTerm]);
 
   useEffect(() => {
     fetch('/api/promotions/somePromoId')
@@ -81,10 +95,13 @@ const Products = () => {
       .then(setVendors); // emit loading and show spinner
   }, []);
 
-  const handleVendorChange = (event) => {
-    setProducts([]); // to show loader
+  const handleVendorChange = useCallback((event) => {
     setActiveVendor(event.target.value as string);
-  }
+  }, []);
+
+  const handleSearchChange = useCallback((event) => {
+    setSearch(event.target.value as string);
+  }, []);
 
   return (
     <React.Fragment>
@@ -93,10 +110,10 @@ const Products = () => {
           <Typography component='h1' variant='h2' color='textPrimary' gutterBottom>
             Products
           </Typography>
-          <div className={ classes.pageButtons }>
+          <div className={ classes.pageActions }>
             <Grid container spacing={ 2 }>
               <Grid item>
-                <TextField id='search' label='Search' />
+                <TextField id='search' label='Search' value={ search } onChange={ handleSearchChange } />
               </Grid>
               { !!vendors.length && <Grid item>
                 <InputLabel id='vendors-select-label'>Vendors</InputLabel>
@@ -107,8 +124,8 @@ const Products = () => {
                   value={ activeVendor }
                   onChange={ handleVendorChange }
                 >
-                  <MenuItem value={''}>All</MenuItem>
-                  { vendors.map(vendor => <MenuItem value={ vendor }>{ vendor }</MenuItem>) }
+                  <MenuItem value=''>All</MenuItem>
+                  { vendors.map(vendor => <MenuItem key={ vendor } value={ vendor }>{ vendor }</MenuItem>) }
                 </Select>
               </Grid> }
             </Grid>
@@ -121,7 +138,7 @@ const Products = () => {
           ? <Grid container spacing={ 4 }>
             { products.map((product, index) => (
               <>
-                { promo && promo.order === index && <Grid item key={ 'promo' } xs={ 12 } sm={ 6 } md={ 4 }>
+                { promo && promo.order === index && <Grid item key='promo' xs={ 12 } sm={ 6 } md={ 4 }>
                   <Card className={ classes.product }>
                     <CardContent className={ clsx(classes.productContent, classes.promo) }>
                       <Typography gutterBottom variant='h5' component='h2'>
@@ -160,7 +177,7 @@ const Products = () => {
             )) }
           </Grid>
           : <Box display='flex' justifyContent='center'>
-            <CircularProgress />
+            { loading ? <CircularProgress /> : 'No results' }
           </Box>
         }
       </Container>
