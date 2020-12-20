@@ -6,7 +6,7 @@ Describe how I have implemented, folder structure, etc.
 ## How to start
 
 ### App
-- add `data.json` to the root of the folder
+- add `data.json` to the 'assets' folder in api: **apps/api/src/assets**
 - `npm install`
 - `npm start`
 - `npm start:api`

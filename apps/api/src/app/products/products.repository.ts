@@ -2,7 +2,7 @@ import { Product } from '@product-viewer/api-interfaces';
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-import { products } from '../../../../../data.json';
+import { products } from '../../assets/data.json';
 
 export class ProductsRepository { // implements CRUD
   // static, cause NO Dependency injection and I don't want create new PromotionsRepository() by hands
