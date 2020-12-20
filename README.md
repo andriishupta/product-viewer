@@ -1,38 +1,52 @@
 # ProductViewer
+https://product-viewer-shupta.herokuapp.com/
 
 ## Implementation plan
-Describe how I have implemented, folder structure, etc.
+I decided to use `Nrwl NX` workspace for fast full stack development experience. Used `React + material-ui` for FE and `Express.js` for BE.
+
+
+`React` application is a standard application written with _react-router, hooks and fetch_ for getting data. Done some memory improvements with `useCallback` and **LazyLoad** package.
+
+
+For BE implemented _Repository_ pattern(meaning it would be easy to replace JSON based DB to a real one) just reimplementing single file. Used `in memory-caching` for searching by term & term + vendor  
+
+Implemented unit tests and e2e tests.
+
+Deployed as Single app on Heroku - needed to modify and serve dist React app as `express.static`
+
 
 ## How to start
 
 ### App
 - add `data.json` to the 'assets' folder in api: **apps/api/src/assets**
 - `npm install`
-- `npm start`
-- `npm start:api`
+- `npm start` - to start FE
+- `npm start:api` - to start BE
+
+go to localhost:4200
 
 ### Tests
 - `npm run test` - or just `jest` in root for all tests
 - `npm run test:api` - or just `jest` in root for all tests
-- `npm run e2e` - FE and BE should be running
+- `npm run e2e` - FE and BE should be running(gives error about port at star, but proceeds and opens CY GUI)
 
-## To improve
+everything works
+
+## To improve(latest was added on top)
 - BEM and ids for testing
 - split products components: header actions / list
-- api validation
-- api security
+- api validation Joi
+- api security helmet
 - i18n
 - general code refactor: components/styles/etc.
 - work with stopping http requests, like Angular's httpClient with RxJS unsubscribe/takeUntil
-- show promo last, if there is 10 products and promo is ordered as 1000th? currently would show only if order === index
-- add App context/cache layer for FE: to show product instantly if exists in list
-- give smaller resolution images for preview :) or need to have `srcset`
-- lazy images(Card from Material-UI doesn't support it)
-- virtual scroll(with lazy media)
+- add App context/cache layer for FE: to show Product instantly if exists in list
+- get smaller resolution images for preview or get `srcset`
+- virtual scroll
 - use Search Service: Elastic search
 - use better state management to see when it is loading, error and data exists
-- for promotion use some 3rd party service
-- add relational database(with sharding)
+- for promo use some 3rd party service
+- add relational database
 - use Cloudfront and it's caching
 - create Docker Config to have all up and running easy(FE/BE/DB)
 - set up Serveless/Terraform to have our apps in cloud(ex. AWS EC2)
