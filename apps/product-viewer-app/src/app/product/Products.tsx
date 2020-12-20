@@ -63,7 +63,7 @@ const Products = () => {
   useEffect(() => {
     fetch('/api/promotions/somePromoId')
       .then((r) => r.json())
-      .then(setPromo)
+      .then((data) => setTimeout(() => setPromo(data), 1500)) // emit promo loading later
       .catch(() => console.log('3rd party service failed, but we still showing our list'));
   }, []);
 
