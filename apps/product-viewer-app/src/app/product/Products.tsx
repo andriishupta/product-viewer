@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
+import LazyLoad from 'react-lazyload';
 import clsx from 'clsx';
 
 import { makeStyles } from '@material-ui/core/styles';
@@ -107,11 +108,13 @@ const Products = () => {
                 </Grid> }
                 <Grid item key={ product.id } xs={ 12 } sm={ 6 } md={ 4 }>
                   <Card className={ classes.product }>
-                    <CardMedia
-                      className={ classes.productMedia }
-                      image={ product.media[1].url }
-                      title={ product.name }
-                    />
+                    <LazyLoad height={300} offset={100}>
+                      <CardMedia
+                        className={ classes.productMedia }
+                        image={ product.media[1].url }
+                        title={ product.name }
+                      />
+                    </LazyLoad>
                     <CardContent className={ classes.productContent }>
                       <Typography gutterBottom variant='h5' component='h2'>
                         { product.name }
