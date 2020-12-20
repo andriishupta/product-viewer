@@ -14,7 +14,7 @@ export class ProductsRepository { // implements CRUD
     }
 
     if (search) {
-      productsResponse = productsResponse.filter(product => product.name.includes(search));
+      productsResponse = productsResponse.filter(product => product.name.toLowerCase().includes(search.toLowerCase()));
     }
 
     return productsResponse;
