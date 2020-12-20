@@ -17,6 +17,9 @@ Describe how I have implemented, folder structure, etc.
 - `npm run test:api`
 
 ## To improve
+- give smaller resolution images for preview :) or need to have `srcset`
+- lazy images(Card from Material-UI doesn't support it)
+- virtual scroll(with lazy media)
 - use Search Service: Elastic search
 - use better state management to see when it is loading, error and data exists
 - for promotion use some 3rd party service

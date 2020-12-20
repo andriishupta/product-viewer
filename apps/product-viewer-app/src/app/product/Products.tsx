@@ -1,9 +1,22 @@
 import React, { useEffect, useState } from 'react';
+import { Link as RouterLink } from 'react-router-dom';
 
 import { makeStyles } from '@material-ui/core/styles';
-import { Button, Card, CardActions, CardContent, CardMedia, Container, Grid, Typography } from '@material-ui/core';
+import {
+  Box,
+  Button,
+  Card,
+  CardActions,
+  CardContent,
+  CardMedia,
+  CircularProgress,
+  Container,
+  Grid,
+  Link,
+  Typography
+} from '@material-ui/core';
 
-import { Message } from '@product-viewer/api-interfaces';
+import { Product } from '@product-viewer/api-interfaces';
 
 const useStyles = makeStyles((theme) => ({
   heroContent: {
@@ -13,33 +26,31 @@ const useStyles = makeStyles((theme) => ({
   heroButtons: {
     marginTop: theme.spacing(4)
   },
-  cardGrid: {
+  productGrid: {
     paddingTop: theme.spacing(8),
     paddingBottom: theme.spacing(8)
   },
-  card: {
+  product: {
     height: '100%',
     display: 'flex',
     flexDirection: 'column'
   },
-  cardMedia: {
+  productMedia: {
     paddingTop: '56.25%' // 16:9
   },
-  cardContent: {
+  productContent: {
     flexGrow: 1
   }
 }));
 
-const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9];
-
 const Products = () => {
   const classes = useStyles();
-  const [m, setMessage] = useState<Message>({ message: '' });
+  const [products, setProducts] = useState<Product[]>([]);
 
   useEffect(() => {
     fetch('/api/products')
       .then((r) => r.json())
-      .then(setMessage);
+      .then((data) => setTimeout(() => setProducts(data), 1000)); // emit loading and show spinner
   }, []);
 
   return (
@@ -66,36 +77,40 @@ const Products = () => {
         </Container>
       </div>
 
-      <Container className={ classes.cardGrid } maxWidth='md'>
-        <Grid container spacing={ 4 }>
-          { cards.map((card) => (
-            <Grid item key={ card } xs={ 12 } sm={ 6 } md={ 4 }>
-              <Card className={ classes.card }>
-                <CardMedia
-                  className={ classes.cardMedia }
-                  image='https://source.unsplash.com/random'
-                  title='Image title'
-                />
-                <CardContent className={ classes.cardContent }>
-                  <Typography gutterBottom variant='h5' component='h2'>
-                    Heading
-                  </Typography>
-                  <Typography>
-                    This is a media card. You can use this section to describe the content.
-                  </Typography>
-                </CardContent>
-                <CardActions>
-                  <Button size='small' color='primary'>
-                    View
-                  </Button>
-                  <Button size='small' color='primary'>
-                    Edit
-                  </Button>
-                </CardActions>
-              </Card>
-            </Grid>
-          )) }
-        </Grid>
+      <Container className={ classes.productGrid } maxWidth='md'>
+        { products.length
+          ? <Grid container spacing={ 4 }>
+            { products.map((product) => (
+              <Grid item key={ product.id } xs={ 12 } sm={ 6 } md={ 4 }>
+                <Card className={ classes.product }>
+                  <CardMedia
+                    className={ classes.productMedia }
+                    image={ product.media[1].url }
+                    title={ product.name }
+                  />
+                  <CardContent className={ classes.productContent }>
+                    <Typography gutterBottom variant='h5' component='h2'>
+                      { product.name }
+                    </Typography>
+                    <Typography>
+                      { product.vendor }
+                    </Typography>
+                  </CardContent>
+                  <CardActions>
+                    <Link to={ `/products/${ product.id }` } component={ RouterLink }>
+                      <Button size='small' color='primary'>
+                        View
+                      </Button>
+                    </Link>
+                  </CardActions>
+                </Card>
+              </Grid>
+            )) }
+          </Grid>
+          : <Box display='flex' justifyContent='center'>
+            <CircularProgress />
+          </Box>
+        }
       </Container>
     </React.Fragment>
   );
