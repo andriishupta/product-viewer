@@ -17,6 +17,8 @@ Describe how I have implemented, folder structure, etc.
 - `npm run test:api`
 
 ## To improve
+- show promo last, if there is 10 products and promo is ordered as 1000th? currently would show only if order === index
+- add App context/cache layer for FE: to show product instantly if exists in list
 - give smaller resolution images for preview :) or need to have `srcset`
 - lazy images(Card from Material-UI doesn't support it)
 - virtual scroll(with lazy media)
