@@ -1,26 +1,29 @@
-import React, { useEffect, useState } from 'react';
-import { Message } from '@product-viewer/api-interfaces';
+import React from 'react';
+import { BrowserRouter, Link, Route, Switch } from 'react-router-dom';
+
+import { Product, Products } from './product';
+import Home from './Home';
 
 export const App = () => {
-  const [m, setMessage] = useState<Message>({ message: '' });
-
-  useEffect(() => {
-    fetch('/api')
-      .then((r) => r.json())
-      .then(setMessage);
-  }, []);
-
   return (
-    <>
-      <div style={{ textAlign: 'center' }}>
-        <h1>Welcome to product-viewer-app!</h1>
-        <img
-          width="450"
-          src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png"
-        />
+    <BrowserRouter>
+      <div className='app'>
+        <nav className='app-nav'>
+          <ul>
+            <li>
+              <Link to='/'>Home</Link>
+              <Link to='/products'>Products</Link>
+            </li>
+          </ul>
+        </nav>
+        <Switch>
+          <Route path='/' exact component={ Home } />
+          <Route path='/products' exact component={ Products } />
+          <Route path='/products/:id' exact component={ Product } />
+          <Route path='*' red />
+        </Switch>
       </div>
-      <div>{m.message}</div>
-    </>
+    </BrowserRouter>
   );
 };
 
