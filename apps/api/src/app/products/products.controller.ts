@@ -8,7 +8,7 @@ router.get(
   '/',
   cache(5 * 60, (req) => !req.query.search && !req.query.vendor),
   (req, res) => {
-  setTimeout(() => res.json(ProductsService.get(req.query as { vendor: string, search: string })), 5000);
+  setTimeout(() => res.json(ProductsService.get(req.query as { vendor: string, search: string })), 2500);
 });
 
 // cache all the time
