@@ -10,9 +10,10 @@ const app = express();
 
 const greeting: Message = { message: 'Welcome to api!' };
 
+const staticApp = path.join(__dirname, '..', 'product-viewer-app');
 // serve app from dist folder
 // Serve static files from the React app
-app.use(express.static(path.join(__dirname, '..', 'product-viewer-app')));
+app.use(express.static(staticApp));
 
 app.get('/api', (req, res) => {
   res.send(greeting);
@@ -23,7 +24,7 @@ app.use('/api/promotions', promotionsController);
 app.use('/api/vendors', vendorsController);
 
 app.get('*', (req, res) => {
-  res.status(404).json({ error: 'Not found!' });
+  res.sendFile('index.html', { root: staticApp });
 });
 
 app.use((err, req, res, next) => {

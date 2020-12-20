@@ -44,10 +44,14 @@ const Product = () => {
             <Typography component='h3' variant='subtitle1' color='textPrimary' gutterBottom>
               { product.vendor }
             </Typography>
+            <img width='200px' height ='200px' src={ product.media && product.media[1] && product.media[1].url }/>
           </Container>
         </div>
 
         <Container className={ classes.productContent } maxWidth='md'>
+          <Typography component='h5' variant='h5' color='textPrimary' gutterBottom>
+            More about the product:
+          </Typography>
           <video controls width='450'>
             <source
               src={ product.media && product.media[0] && product.media[0].url }

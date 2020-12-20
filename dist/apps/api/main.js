@@ -154,7 +154,7 @@ class ProductsRepository {
 /* harmony import */ var memory_cache__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(5);
 /* harmony import */ var memory_cache__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(memory_cache__WEBPACK_IMPORTED_MODULE_0__);
 
-const cache = (durationInSeconds, skipWhen) => {
+const cache = (durationInSeconds, useWhen) => {
     return (req, res, next) => {
         const key = '__express__' + req.originalUrl || false;
         const cachedBody = memory_cache__WEBPACK_IMPORTED_MODULE_0__["get"](key);
@@ -162,7 +162,7 @@ const cache = (durationInSeconds, skipWhen) => {
             res.send(cachedBody);
             return;
         }
-        else if (skipWhen ? skipWhen(req) : true) {
+        else if (useWhen ? useWhen(req) : true) {
             res.sendResponse = res.send;
             res.send = (body) => {
                 memory_cache__WEBPACK_IMPORTED_MODULE_0__["put"](key, body, durationInSeconds * 1000);
@@ -240,7 +240,7 @@ module.exports = require("path");
 
 
 const router = Object(express__WEBPACK_IMPORTED_MODULE_0__["Router"])();
-router.get('/', Object(_cache__WEBPACK_IMPORTED_MODULE_2__[/* cache */ "a"])(5 * 60, (req) => !req.query.search && !req.query.vendor), (req, res) => {
+router.get('/', Object(_cache__WEBPACK_IMPORTED_MODULE_2__[/* cache */ "a"])(5 * 60, (req) => req.query.search || (req.query.search && req.query.vendor)), (req, res) => {
     setTimeout(() => res.json(_products_service__WEBPACK_IMPORTED_MODULE_1__[/* ProductsService */ "a"].get(req.query)), 2500);
 });
 // cache all the time
@@ -352,8 +352,10 @@ __webpack_require__.r(__webpack_exports__);
 
 const app = express__WEBPACK_IMPORTED_MODULE_0__();
 const greeting = { message: 'Welcome to api!' };
+const staticApp = path__WEBPACK_IMPORTED_MODULE_1__["join"](__dirname, '..', 'product-viewer-app');
+// serve app from dist folder
 // Serve static files from the React app
-app.use(express__WEBPACK_IMPORTED_MODULE_0__["static"](path__WEBPACK_IMPORTED_MODULE_1__["join"](__dirname, '..', 'product-viewer-app')));
+app.use(express__WEBPACK_IMPORTED_MODULE_0__["static"](staticApp));
 app.get('/api', (req, res) => {
     res.send(greeting);
 });
@@ -361,7 +363,7 @@ app.use('/api/products', _app_products_products_controller__WEBPACK_IMPORTED_MOD
 app.use('/api/promotions', _app_promotions_promotions_controller__WEBPACK_IMPORTED_MODULE_3__[/* default */ "a"]);
 app.use('/api/vendors', _app_vendors_vendors_controller__WEBPACK_IMPORTED_MODULE_4__[/* default */ "a"]);
 app.get('*', (req, res) => {
-    res.status(404).json({ error: 'Not found!' });
+    res.sendFile('index.html', { root: staticApp });
 });
 app.use((err, req, res, next) => {
     res.status(500).json({ error: 'Crash!' });
