@@ -21,11 +21,11 @@ import {
 import { Product, Promotion } from '@product-viewer/api-interfaces';
 
 const useStyles = makeStyles((theme) => ({
-  heroContent: {
+  pageContent: {
     backgroundColor: theme.palette.background.paper,
     padding: theme.spacing(8, 0, 6)
   },
-  heroButtons: {
+  pageButtons: {
     marginTop: theme.spacing(4)
   },
   productGrid: {
@@ -40,7 +40,7 @@ const useStyles = makeStyles((theme) => ({
   promo: {
     display: 'flex',
     justifyContent: 'center',
-    alignItems: 'center',
+    alignItems: 'center'
   },
   productMedia: {
     paddingTop: '56.25%' // 16:9
@@ -70,12 +70,12 @@ const Products = () => {
 
   return (
     <React.Fragment>
-      <div className={ classes.heroContent }>
+      <div className={ classes.pageContent }>
         <Container maxWidth='md'>
           <Typography component='h1' variant='h2' color='textPrimary' gutterBottom>
             Products
           </Typography>
-          <div className={ classes.heroButtons }>
+          <div className={ classes.pageButtons }>
             <Grid container spacing={ 2 }>
               <Grid item>
                 <Button variant='contained' color='primary'>
@@ -108,7 +108,7 @@ const Products = () => {
                 </Grid> }
                 <Grid item key={ product.id } xs={ 12 } sm={ 6 } md={ 4 }>
                   <Card className={ classes.product }>
-                    <LazyLoad height={300} offset={100}>
+                    <LazyLoad height={ 300 } offset={ 100 }>
                       <CardMedia
                         className={ classes.productMedia }
                         image={ product.media && product.media[1] && product.media[1].url }

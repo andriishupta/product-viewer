@@ -17,6 +17,9 @@ Describe how I have implemented, folder structure, etc.
 - `npm run test:api`
 
 ## To improve
+- i18n
+- general code refactor: components/styles/etc.
+- work with stopping http requests, like Angular's httpClient with RxJS unsubscribe/takeUntil
 - not all product Ids are unique
 - show promo last, if there is 10 products and promo is ordered as 1000th? currently would show only if order === index
 - add App context/cache layer for FE: to show product instantly if exists in list
