@@ -1,14 +1,18 @@
 import { Router } from 'express';
 import { ProductsService } from './products.service';
+import { cache } from '../../cache';
 
 const router = Router();
 
-// todo: add caching with Redis.
-router.get('/', (req, res) => {
-  res.json(ProductsService.get(req.query as { vendor: string, search: string }));
+router.get(
+  '/',
+  cache(5 * 60, (req) => !req.query.search && !req.query.vendor),
+  (req, res) => {
+  setTimeout(() => res.json(ProductsService.get(req.query as { vendor: string, search: string })), 5000);
 });
 
-router.get('/:id', (req, res) => {
+// cache all the time
+router.get('/:id', cache(5 * 60), (req, res) => {
   const id = req.params.id;
   const product = ProductsService.getById(id);
 
