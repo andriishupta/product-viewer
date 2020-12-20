@@ -30,7 +30,7 @@ const Product = () => {
   useEffect(() => {
     fetch(`/api/products/${ id }`)
       .then((r) => r.json())
-      .then((data) => setTimeout(() => setProduct(data), 1000));
+      .then(setProduct);
   }, []);
 
   return (

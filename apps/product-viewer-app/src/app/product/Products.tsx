@@ -76,10 +76,8 @@ const Products = () => {
 
     fetch('/api/products' + vendorQ + searchQ)
       .then((r) => r.json())
-      .then((data) => setTimeout(() => {
-        setProducts(data);
-        setLoading(false);
-      }, 1000)); // emit loading and show spinner
+      .then(setProducts)
+      .finally(() => setLoading(false)); // emit loading and show spinner
   }, [activeVendor, debouncedSearchTerm]);
 
   useEffect(() => {
