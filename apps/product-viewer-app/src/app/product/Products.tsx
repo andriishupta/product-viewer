@@ -14,7 +14,11 @@ import {
   CircularProgress,
   Container,
   Grid,
+  InputLabel,
   Link,
+  MenuItem,
+  Select,
+  TextField,
   Typography
 } from '@material-ui/core';
 
@@ -54,18 +58,27 @@ const Products = () => {
   const classes = useStyles();
   const [products, setProducts] = useState<Product[]>([]);
   const [promo, setPromo] = useState<Promotion>();
+  const [vendors, setVendors] = useState<string[]>([]);
+  const [activeVendor, setActiveVendor] = useState<string>('');
 
   useEffect(() => {
-    fetch('/api/products')
+    const vendor = activeVendor ? `?vendor=${activeVendor}` : '';
+    fetch('/api/products' + vendor)
       .then((r) => r.json())
       .then((data) => setTimeout(() => setProducts(data), 1000)); // emit loading and show spinner
-  }, []);
+  }, [activeVendor]);
 
   useEffect(() => {
     fetch('/api/promotions/somePromoId')
       .then((r) => r.json())
       .then((data) => setTimeout(() => setPromo(data), 1500)) // emit promo loading later
       .catch(() => console.log('3rd party service failed, but we still showing our list'));
+  }, []);
+
+  useEffect(() => {
+    fetch('/api/vendors')
+      .then((r) => r.json())
+      .then(setVendors); // emit loading and show spinner
   }, []);
 
   return (
@@ -78,15 +91,21 @@ const Products = () => {
           <div className={ classes.pageButtons }>
             <Grid container spacing={ 2 }>
               <Grid item>
-                <Button variant='contained' color='primary'>
-                  Search
-                </Button>
+                <TextField id='search' label='Search' />
               </Grid>
-              <Grid item>
-                <Button variant='outlined' color='primary'>
-                  Vendors
-                </Button>
-              </Grid>
+              { vendors.length && <Grid item>
+                <InputLabel id='vendors-select-label'>Vendors</InputLabel>
+                <Select
+                  style={ { width: '200px' } }
+                  labelId='vendors-select-label'
+                  id='vendors-select'
+                  value={ activeVendor }
+                  onChange={ (event) => setActiveVendor(event.target.value as string) }
+                >
+                  <MenuItem value={''}>All</MenuItem>
+                  { vendors.map(vendor => <MenuItem value={ vendor }>{ vendor }</MenuItem>) }
+                </Select>
+              </Grid> }
             </Grid>
           </div>
         </Container>
@@ -97,7 +116,7 @@ const Products = () => {
           ? <Grid container spacing={ 4 }>
             { products.map((product, index) => (
               <>
-                { promo && promo.order === index && <Grid item key={ product.id } xs={ 12 } sm={ 6 } md={ 4 }>
+                { promo && promo.order === index && <Grid item key={ 'promo' } xs={ 12 } sm={ 6 } md={ 4 }>
                   <Card className={ classes.product }>
                     <CardContent className={ clsx(classes.productContent, classes.promo) }>
                       <Typography gutterBottom variant='h5' component='h2'>

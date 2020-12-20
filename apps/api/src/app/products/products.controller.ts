@@ -5,7 +5,7 @@ const router = Router();
 
 // todo: add caching with Redis.
 router.get('/', (req, res) => {
-  res.json(ProductsService.get());
+  res.json(ProductsService.get(req.query as { vendor: string, search: string }));
 });
 
 router.get('/:id', (req, res) => {

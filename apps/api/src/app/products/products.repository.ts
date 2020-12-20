@@ -5,8 +5,15 @@ import { Product } from '@product-viewer/api-interfaces';
 import { products } from '../../../../../data.json';
 
 export class ProductsRepository { // implements CRUD
-  static get(): Product[] { // static, cause NO Dependency injection and I don't want create new PromotionsRepository() by hands
-    return products;
+  // static, cause NO Dependency injection and I don't want create new PromotionsRepository() by hands
+  static get({ vendor, search }: { vendor: string, search: string }): Product[] {
+    let productsResponse: Product[] = products;
+
+    if (vendor) {
+      productsResponse = productsResponse.filter(product => product.vendor === vendor);
+    }
+
+    return productsResponse;
   }
 
   static getById(id: string): Product {
