@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Link, Route, Switch } from 'react-router-dom';
+import { BrowserRouter, Link, Route, Switch, Redirect } from 'react-router-dom';
 
 import { Product, Products } from './product';
 import Home from './Home';
@@ -20,7 +20,7 @@ export const App = () => {
           <Route path='/' exact component={ Home } />
           <Route path='/products' exact component={ Products } />
           <Route path='/products/:id' exact component={ Product } />
-          <Route path='*' red />
+          <Redirect from="*" to='/' />
         </Switch>
       </div>
     </BrowserRouter>
