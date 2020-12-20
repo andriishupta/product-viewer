@@ -1,13 +1,18 @@
-import { getGreeting } from '../support/app.po';
+import { getGreeting, getGreetingDescription, getProductsLink } from '../support/app.po';
 
 describe('product-viewer-app', () => {
   beforeEach(() => cy.visit('/'));
 
   it('should display welcome message', () => {
-    // Custom command example, see `../support/commands.ts` file
-    cy.login('my-email@something.com', 'myPassword');
+    getGreeting().contains('Welcome!');
+    getGreetingDescription().contains('Product View');
+  });
 
-    // Function helper example, see `../support/app.po.ts` file
-    getGreeting().contains('Welcome to product-viewer-app!');
+  it('should display Products page', () => {
+    getProductsLink().click();
+    cy.get('h1').should('exist');
+    cy.get('#search').should('exist');
+    cy.get('#vendors-select').should('exist');
+    cy.get('.products').should('exist');
   });
 });

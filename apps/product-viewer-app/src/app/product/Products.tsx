@@ -131,7 +131,7 @@ const Products = () => {
         </Container>
       </div>
 
-      <Container className={ classes.productGrid } maxWidth='md'>
+      <Container className={ clsx(classes.productGrid, 'products') } maxWidth='md'>
         { products.length
           ? <Grid container spacing={ 4 }>
             { products.map((product, index) => (

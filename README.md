@@ -12,11 +12,12 @@ Describe how I have implemented, folder structure, etc.
 - `npm start:api`
 
 ### Tests
-- `npm run test`
-- `npm run e2e`
-- `npm run test:api`
+- `npm run test` - or just `jest` in root for all tests
+- `npm run test:api` - or just `jest` in root for all tests
+- `npm run e2e` - FE and BE should be running
 
 ## To improve
+- BEM and ids for testing
 - split products components: header actions / list
 - api validation
 - api security
