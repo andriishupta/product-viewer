@@ -37,7 +37,7 @@ const Products = () => {
   const [m, setMessage] = useState<Message>({ message: '' });
 
   useEffect(() => {
-    fetch('/api')
+    fetch('/api/products')
       .then((r) => r.json())
       .then(setMessage);
   }, []);
