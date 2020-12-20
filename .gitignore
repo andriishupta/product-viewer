@@ -4,7 +4,6 @@
 /apps/api/src/assets/data.json
 
 # compiled output
-/dist
 /tmp
 /out-tsc
 

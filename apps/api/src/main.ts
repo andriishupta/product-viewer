@@ -1,4 +1,5 @@
 import * as express from 'express';
+import * as path from 'path';
 import { Message } from '@product-viewer/api-interfaces';
 
 import productsController from './app/products/products.controller';
@@ -8,6 +9,10 @@ import vendorsController from './app/vendors/vendors.controller';
 const app = express();
 
 const greeting: Message = { message: 'Welcome to api!' };
+
+// serve app from dist folder
+// Serve static files from the React app
+app.use(express.static(path.join(__dirname, '..', 'product-viewer-app')));
 
 app.get('/api', (req, res) => {
   res.send(greeting);
@@ -25,7 +30,7 @@ app.use((err, req, res, next) => {
   res.status(500).json({ error: 'Crash!' });
 });
 
-const port = process.env.port || 3333;
+const port = process.env.PORT || 3333;
 const server = app.listen(port, () => {
   console.log('Listening at http://localhost:' + port + '/api');
 });

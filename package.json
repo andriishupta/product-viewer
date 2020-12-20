@@ -4,6 +4,7 @@
   "license": "MIT",
   "scripts": {
     "nx": "nx",
+    "start:heroku": "node dist/apps/api/main.js",
     "start": "nx serve",
     "start:api": "nx serve api",
     "build": "nx build",
