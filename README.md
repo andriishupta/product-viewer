@@ -1,5 +1,8 @@
 # ProductViewer
 
+## Implementation plan
+Describe how I have implemented, folder structure, etc.
+
 ## How to start
 
 ### App
@@ -15,6 +18,7 @@
 
 ## To improve
 - use Search Service: Elastic search
+- use better state management to see when it is loading, error and data exists
 - for promotion use some 3rd party service
 - add relational database(with sharding)
 - use Cloudfront and it's caching
